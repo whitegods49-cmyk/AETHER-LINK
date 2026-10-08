@@ -53,7 +53,9 @@ body{font-family:-apple-system,system-ui,sans-serif;background:#000;color:#fff;o
 </div>
 
 <script>
-const isPhone = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+// ELON FIX: Detect phone by screen size and touch, NOT user-agent (bypasses Desktop site bug)
+const isPhone = window.innerWidth < 1024 || 'ontouchstart' in window;
+
 const config = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' }] } };
 let peer, conn, stream;
 
@@ -74,23 +76,18 @@ async function activate() {
     if (stream) return;
     showStatus('Initializing link...');
 
-    // METHOD 1: Standard Modern API
     try {
         if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
             stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
-        } 
-        // METHOD 2: Legacy API (Bypasses some Android blocks)
-        else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             stream = await navigator.mediaDevices.getUserMedia({ video: { mediaSource: 'screen' }, audio: false });
-        } 
-        else { throw new Error('API missing'); }
+        } else { throw new Error('API missing'); }
         
         startStream();
     } catch (e) {
         console.error(e);
-        showStatus('System blocked. Clearing cache...');
-        // If it fails, it's the Redmi Privacy Shield. 
-        alert('The phone OS blocked the link. Go to Chrome Settings > Site Settings > Screen sharing > Allow for github.io');
+        showStatus('System blocked. Try Firefox/Edge.');
+        alert('The phone OS blocked the link. Please try using Firefox or Edge browser.');
     }
 }
 
