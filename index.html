@@ -82,6 +82,7 @@ body{font-family:-apple-system,system-ui,sans-serif;background:#000;color:#fff;o
     font-size:12px;
     text-align:center;
     display:none;
+    z-index: 100;
 }
 
 #laptop-ui{
@@ -219,7 +220,6 @@ function showStatus(msg) {
     setTimeout(() => { statusEl.style.display = 'none'; }, 5000);
 }
 
-// ── PHONE: IMMORTAL LINK ──
 function initPhone() {
     peer = new Peer('aether-link-phone', config);
     
@@ -247,50 +247,57 @@ async function activate() {
     console.log('Activate called');
     showStatus('Starting...');
     
-    if (!navigator.mediaDevices) {
-        showStatus('MediaDevices not supported');
-        alert('Your browser does not support screen sharing. Please use Chrome.');
-        return;
-    }
-    
-    if (!navigator.mediaDevices.getDisplayMedia) {
-        showStatus('getDisplayMedia not supported');
-        alert('Screen sharing not supported. Please update Chrome.');
-        return;
-    }
-    
     if (stream) {
         showStatus('Already streaming');
         return;
     }
     
-    try {
-        showStatus('Requesting permission...');
-        stream = await navigator.mediaDevices.getDisplayMedia({ 
-            video: { frameRate: 30 }, 
-            audio: false 
-        });
-        
-        showStatus('Permission granted!');
-        document.getElementById('phone-ui').classList.add('live');
-        localStorage.setItem('aether-link-on', '1');
-        
-        await enablePiP();
-        enableSilentAudio();
-        await enableWakeLock();
-        
-        if (conn?.open) {
-            peer.call('aether-link-laptop', stream);
-        }
-        
-        stream.getVideoTracks()[0].onended = () => {
-            cleanup();
-        };
-    } catch (e) {
-        console.error('Activation error:', e);
-        showStatus('Error: ' + e.message);
-        alert('Error: ' + e.message);
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+        alert('Screen sharing is not supported in this browser. Please try Firefox or Edge.');
+        return;
     }
+
+    // Try multiple constraint formats to bypass Redmi/MIUI restrictions
+    const constraintsList = [
+        { video: true, audio: false },
+        { video: { frameRate: 15 }, audio: false },
+        { video: { width: 1280, height: 720 }, audio: false }
+    ];
+
+    let success = false;
+    for (let constraints of constraintsList) {
+        try {
+            showStatus('Requesting permission...');
+            stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+            success = true;
+            break; // If it works, stop trying
+        } catch (e) {
+            console.warn('Constraint failed:', constraints, e);
+            stream = null; // Reset if it failed
+        }
+    }
+
+    if (!success) {
+        alert('Your phone blocked the screen share. Please use Firefox or Edge browser instead of Chrome.');
+        showStatus('Blocked by phone');
+        return;
+    }
+    
+    showStatus('Permission granted!');
+    document.getElementById('phone-ui').classList.add('live');
+    localStorage.setItem('aether-link-on', '1');
+    
+    await enablePiP();
+    enableSilentAudio();
+    await enableWakeLock();
+    
+    if (conn?.open) {
+        peer.call('aether-link-laptop', stream);
+    }
+    
+    stream.getVideoTracks()[0].onended = () => {
+        cleanup();
+    };
 }
 
 async function enablePiP() {
@@ -348,7 +355,6 @@ function cleanup() {
     if (audioCtx) audioCtx.close().catch(() => {});
 }
 
-// ── LAPTOP: COMMAND CENTER ──
 function initLaptop() {
     peer = new Peer('aether-link-laptop', config);
     
