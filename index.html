@@ -8,156 +8,24 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,system-ui,sans-serif;background:#000;color:#fff;overflow:hidden;height:100vh;width:100vw;-webkit-tap-highlight-color:transparent}
-
-#phone-ui{
-    display:none;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
-    width:100vw;
-    cursor:pointer;
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-#phone-btn{
-    font-size:20px;
-    color:#00ffcc;
-    letter-spacing:2px;
-    border:2px solid #00ffcc;
-    padding:25px 50px;
-    border-radius:50px;
-    background:rgba(0,255,204,0.1);
-    cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
-    user-select:none;
-    -webkit-user-select:none;
-    touch-action:manipulation;
-    box-shadow:0 0 15px rgba(0,255,204,0.3);
-    transition: all 0.3s ease;
-}
-
-#phone-btn:active{
-    transform: scale(0.95);
-    background:rgba(0,255,204,0.3);
-}
-
-#phone-ui.live #phone-btn{
-    opacity:0;
-    transform: scale(0.8);
-}
-
-#phone-dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:#222;
-    position:fixed;
-    top:15px;
-    right:15px;
-    transition:all .3s;
-}
-
-#phone-ui.live #phone-dot{
-    background:#0f0;
-    box-shadow:0 0 8px #0f0;
-}
-
-#pip-video{
-    position:fixed;
-    top:-100px;
-    left:-100px;
-    width:1px;
-    height:1px;
-    opacity:0;
-    pointer-events:none;
-}
-
-#status-msg{
-    position:fixed;
-    bottom:50px;
-    left:50%;
-    transform:translateX(-50%);
-    color:#ff3355;
-    font-size:12px;
-    text-align:center;
-    display:none;
-    z-index: 100;
-}
-
-#laptop-ui{
-    display:none;
-    height:100vh;
-    width:100vw;
-    position:relative;
-    background:#000;
-}
-
-#screen{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    background:#000;
-    display:block;
-}
-
-#hud{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    padding:12px 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,transparent 100%);
-    z-index:10;
-    pointer-events:none;
-    opacity:0;
-    transition:opacity .5s;
-}
-
+#phone-ui{display:none;align-items:center;justify-content:center;height:100vh;width:100vw;user-select:none;-webkit-user-select:none}
+#phone-btn{font-size:20px;color:#00ffcc;letter-spacing:2px;border:2px solid #00ffcc;padding:25px 50px;border-radius:50px;background:rgba(0,255,204,0.1);cursor:pointer;touch-action:manipulation;box-shadow:0 0 15px rgba(0,255,204,0.3);transition:all 0.3s}
+#phone-btn:active{transform:scale(0.95);background:rgba(0,255,204,0.3)}
+#phone-ui.live #phone-btn{opacity:0;transform:scale(0.8)}
+#phone-dot{width:6px;height:6px;border-radius:50%;background:#222;position:fixed;top:15px;right:15px}
+#phone-ui.live #phone-dot{background:#0f0;box-shadow:0 0 8px #0f0}
+#pip-video{position:fixed;top:-100px;left:-100px;width:1px;height:1px;opacity:0;pointer-events:none}
+#status-msg{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);color:#ff3355;font-size:12px;text-align:center;display:none;z-index:100}
+#laptop-ui{display:none;height:100vh;width:100vw;position:relative;background:#000}
+#screen{width:100%;height:100%;object-fit:contain;background:#000;display:block}
+#hud{position:fixed;top:0;left:0;right:0;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,transparent 100%);z-index:10;pointer-events:none;opacity:0;transition:opacity .5s}
 #hud.show{opacity:1}
-
-#hud .logo{
-    color:#00ffcc;
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:3px;
-    text-shadow:0 0 10px #00ffcc;
-}
-
-#hud .stats{
-    display:flex;
-    gap:20px;
-    font-size:10px;
-    color:#444;
-}
-
-#hud .stats span{
-    color:#00ffcc;
-    font-weight:600;
-}
-
-#waiting{
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-}
-
-#waiting h2{
-    color:#00ffcc;
-    font-size:14px;
-    letter-spacing:4px;
-    margin-bottom:8px;
-}
-
-#waiting p{
-    color:#333;
-    font-size:10px;
-}
+#hud .logo{color:#00ffcc;font-size:13px;font-weight:700;letter-spacing:3px;text-shadow:0 0 10px #00ffcc}
+#hud .stats{display:flex;gap:20px;font-size:10px;color:#444}
+#hud .stats span{color:#00ffcc;font-weight:600}
+#waiting{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+#waiting h2{color:#00ffcc;font-size:14px;letter-spacing:4px;margin-bottom:8px}
+#waiting p{color:#333;font-size:10px}
 </style>
 </head>
 <body>
@@ -186,216 +54,61 @@ body{font-family:-apple-system,system-ui,sans-serif;background:#000;color:#fff;o
 
 <script>
 const isPhone = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-
-const config = {
-    config: {
-        iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' },
-            { urls: 'stun:stun2.l.google.com:19302' },
-            { urls: 'stun:stun3.l.google.com:19302' },
-            { urls: 'stun:stun4.l.google.com:19302' },
-            { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' },
-            { urls: 'turn:openrelay.metered.ca:443', username: 'openrelayproject', credential: 'openrelayproject' }
-        ]
-    }
-};
-
-let peer, conn, stream, wakeLock, audioCtx, silentOsc;
+const config = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'turn:openrelay.metered.ca:80', username: 'openrelayproject', credential: 'openrelayproject' }] } };
+let peer, conn, stream;
 
 window.onload = () => {
-    if (isPhone) {
-        document.getElementById('phone-ui').style.display = 'flex';
-        initPhone();
-    } else {
-        document.getElementById('laptop-ui').style.display = 'block';
-        initLaptop();
-    }
+    if (isPhone) { document.getElementById('phone-ui').style.display = 'flex'; initPhone(); } 
+    else { document.getElementById('laptop-ui').style.display = 'block'; initLaptop(); }
 };
 
-function showStatus(msg) {
-    const statusEl = document.getElementById('status-msg');
-    statusEl.innerText = msg;
-    statusEl.style.display = 'block';
-    setTimeout(() => { statusEl.style.display = 'none'; }, 5000);
-}
+function showStatus(msg) { const el = document.getElementById('status-msg'); el.innerText = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 4000); }
 
 function initPhone() {
     peer = new Peer('aether-link-phone', config);
-    
-    peer.on('connection', c => {
-        conn = c;
-        conn.on('open', () => {
-            if (localStorage.getItem('aether-link-on') === '1') activate();
-        });
-        conn.on('data', d => {
-            if (d === 'ping') conn.send('pong:' + Date.now());
-        });
-    });
-    
-    peer.on('error', (err) => {
-        console.error('Peer error:', err);
-        setTimeout(initPhone, 3000);
-    });
-    
-    document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && stream) ensureAlive();
-    });
+    peer.on('connection', c => { conn = c; conn.on('open', () => { if (localStorage.getItem('aether-on') === '1') activate(); }); conn.on('data', d => { if (d === 'ping') conn.send('pong:' + Date.now()); }); });
+    peer.on('error', () => setTimeout(initPhone, 3000));
 }
 
 async function activate() {
-    console.log('Activate called');
-    showStatus('Starting...');
-    
-    if (stream) {
-        showStatus('Already streaming');
-        return;
-    }
-    
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-        alert('Screen sharing is not supported in this browser. Please try Firefox or Edge.');
-        return;
-    }
+    if (stream) return;
+    showStatus('Initializing link...');
 
-    // Try multiple constraint formats to bypass Redmi/MIUI restrictions
-    const constraintsList = [
-        { video: true, audio: false },
-        { video: { frameRate: 15 }, audio: false },
-        { video: { width: 1280, height: 720 }, audio: false }
-    ];
-
-    let success = false;
-    for (let constraints of constraintsList) {
-        try {
-            showStatus('Requesting permission...');
-            stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-            success = true;
-            break; // If it works, stop trying
-        } catch (e) {
-            console.warn('Constraint failed:', constraints, e);
-            stream = null; // Reset if it failed
-        }
+    // METHOD 1: Standard Modern API
+    try {
+        if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+            stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+        } 
+        // METHOD 2: Legacy API (Bypasses some Android blocks)
+        else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { mediaSource: 'screen' }, audio: false });
+        } 
+        else { throw new Error('API missing'); }
+        
+        startStream();
+    } catch (e) {
+        console.error(e);
+        showStatus('System blocked. Clearing cache...');
+        // If it fails, it's the Redmi Privacy Shield. 
+        alert('The phone OS blocked the link. Go to Chrome Settings > Site Settings > Screen sharing > Allow for github.io');
     }
+}
 
-    if (!success) {
-        alert('Your phone blocked the screen share. Please use Firefox or Edge browser instead of Chrome.');
-        showStatus('Blocked by phone');
-        return;
-    }
-    
-    showStatus('Permission granted!');
+function startStream() {
     document.getElementById('phone-ui').classList.add('live');
-    localStorage.setItem('aether-link-on', '1');
-    
-    await enablePiP();
-    enableSilentAudio();
-    await enableWakeLock();
-    
-    if (conn?.open) {
-        peer.call('aether-link-laptop', stream);
-    }
-    
-    stream.getVideoTracks()[0].onended = () => {
-        cleanup();
-    };
-}
-
-async function enablePiP() {
-    try {
-        const pipVideo = document.getElementById('pip-video');
-        pipVideo.srcObject = stream;
-        if (document.pictureInPictureEnabled && !pipVideo.disablePictureInPicture) {
-            await pipVideo.requestPictureInPicture();
-        }
-    } catch (e) {
-        console.log('PiP not available');
-    }
-}
-
-function enableSilentAudio() {
-    try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        silentOsc = audioCtx.createOscillator();
-        silentOsc.frequency.value = 0;
-        const gain = audioCtx.createGain();
-        gain.gain.value = 0.001;
-        silentOsc.connect(gain);
-        gain.connect(audioCtx.destination);
-        silentOsc.start(0);
-    } catch (e) {
-        console.log('Silent audio failed');
-    }
-}
-
-async function enableWakeLock() {
-    try {
-        if ('wakeLock' in navigator) {
-            wakeLock = await navigator.wakeLock.request('screen');
-            wakeLock.addEventListener('release', () => {
-                if (stream) setTimeout(enableWakeLock, 1000);
-            });
-        }
-    } catch (e) {
-        console.log('Wake Lock failed');
-    }
-}
-
-async function ensureAlive() {
-    if (!stream) return;
-    if (!wakeLock || wakeLock.released) await enableWakeLock();
-}
-
-function cleanup() {
-    stream = null;
-    document.getElementById('phone-ui').classList.remove('live');
-    localStorage.removeItem('aether-link-on');
-    if (document.pictureInPictureElement) document.exitPictureInPicture().catch(() => {});
-    if (wakeLock) wakeLock.release().catch(() => {});
-    if (silentOsc) silentOsc.stop();
-    if (audioCtx) audioCtx.close().catch(() => {});
+    localStorage.setItem('aether-on', '1');
+    if (conn?.open) peer.call('aether-link-laptop', stream);
+    stream.getVideoTracks()[0].onended = () => { stream = null; document.getElementById('phone-ui').classList.remove('live'); localStorage.removeItem('aether-on'); };
 }
 
 function initLaptop() {
     peer = new Peer('aether-link-laptop', config);
-    
-    peer.on('open', () => {
-        conn = peer.connect('aether-link-phone');
-        conn.on('open', () => {
-            document.getElementById('s-state').innerText = 'LINKED';
-            startPing();
-        });
-        conn.on('close', () => setTimeout(() => { conn = peer.connect('aether-link-phone'); }, 3000));
-    });
-    
-    peer.on('call', call => {
-        call.answer();
-        call.on('stream', s => {
-            document.getElementById('screen').srcObject = s;
-            document.getElementById('waiting').style.display = 'none';
-            document.getElementById('hud').classList.add('show');
-            document.getElementById('s-state').innerText = 'LIVE';
-        });
-    });
-    
-    peer.on('error', (err) => {
-        console.error('Laptop error:', err);
-        setTimeout(initLaptop, 3000);
-    });
+    peer.on('open', () => { conn = peer.connect('aether-link-phone'); conn.on('open', () => { document.getElementById('s-state').innerText = 'LINKED'; startPing(); }); conn.on('close', () => setTimeout(() => conn = peer.connect('aether-link-phone'), 3000)); });
+    peer.on('call', call => { call.answer(); call.on('stream', s => { document.getElementById('screen').srcObject = s; document.getElementById('waiting').style.display = 'none'; document.getElementById('hud').classList.add('show'); document.getElementById('s-state').innerText = 'LIVE'; }); });
+    peer.on('error', () => setTimeout(initLaptop, 3000));
 }
 
-function startPing() {
-    setInterval(() => {
-        if (conn?.open) {
-            const t = Date.now();
-            conn.send('ping');
-            conn.once('data', d => {
-                if (d.startsWith('pong:')) {
-                    document.getElementById('s-lat').innerText = (Date.now() - t) + 'ms';
-                }
-            });
-        }
-    }, 2000);
-}
+function startPing() { setInterval(() => { if (conn?.open) { const t = Date.now(); conn.send('ping'); conn.once('data', d => { if (d.startsWith('pong:')) document.getElementById('s-lat').innerText = (Date.now() - t) + 'ms'; }); } }, 2000); }
 </script>
 </body>
 </html>
