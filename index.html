@@ -11,30 +11,149 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,system-ui,sans-serif;background:#000;color:#fff;overflow:hidden;height:100vh;width:100vw;-webkit-tap-highlight-color:transparent}
 
-#phone-ui{display:none;align-items:center;justify-content:center;height:100vh;width:100vw;cursor:pointer}
-#phone-btn{font-size:16px;color:#444;letter-spacing:2px}
-#phone-ui.live #phone-btn{opacity:0}
-#phone-dot{width:6px;height:6px;border-radius:50%;background:#222;position:fixed;top:15px;right:15px;transition:all .3s}
-#phone-ui.live #phone-dot{background:#0f0;box-shadow:0 0 8px #0f0}
-#pip-video{position:fixed;top:-100px;left:-100px;width:1px;height:1px;opacity:0;pointer-events:none}
+/* PHONE UI */
+#phone-ui{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+    width:100vw;
+    cursor:pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
 
-#laptop-ui{display:none;height:100vh;width:100vw;position:relative;background:#000}
-#screen{width:100%;height:100%;object-fit:contain;background:#000;display:block}
-#hud{position:fixed;top:0;left:0;right:0;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,transparent 100%);z-index:10;pointer-events:none;opacity:0;transition:opacity .5s}
+/* THE NEW GLOWING BUTTON */
+#phone-btn{
+    font-size:20px;
+    color:#00ffcc;
+    letter-spacing:2px;
+    border:2px solid #00ffcc;
+    padding:25px 50px;
+    border-radius:50px;
+    background:rgba(0,255,204,0.1);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
+    box-shadow:0 0 15px rgba(0,255,204,0.3);
+    transition: all 0.3s ease;
+    pointer-events: none; /* Lets the click pass through to the main container */
+}
+
+#phone-ui.live #phone-btn{
+    opacity:0;
+    transform: scale(0.8);
+}
+
+#phone-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#222;
+    position:fixed;
+    top:15px;
+    right:15px;
+    transition:all .3s;
+}
+
+#phone-ui.live #phone-dot{
+    background:#0f0;
+    box-shadow:0 0 8px #0f0;
+}
+
+#pip-video{
+    position:fixed;
+    top:-100px;
+    left:-100px;
+    width:1px;
+    height:1px;
+    opacity:0;
+    pointer-events:none;
+}
+
+/* LAPTOP UI */
+#laptop-ui{
+    display:none;
+    height:100vh;
+    width:100vw;
+    position:relative;
+    background:#000;
+}
+
+#screen{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#000;
+    display:block;
+}
+
+#hud{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    padding:12px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:linear-gradient(180deg,rgba(0,0,0,.95) 0%,transparent 100%);
+    z-index:10;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .5s;
+}
+
 #hud.show{opacity:1}
-#hud .logo{color:#00ffcc;font-size:13px;font-weight:700;letter-spacing:3px;text-shadow:0 0 10px #00ffcc}
-#hud .stats{display:flex;gap:20px;font-size:10px;color:#444}
-#hud .stats span{color:#00ffcc;font-weight:600}
-#waiting{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-#waiting h2{color:#00ffcc;font-size:14px;letter-spacing:4px;margin-bottom:8px}
-#waiting p{color:#333;font-size:10px}
+
+#hud .logo{
+    color:#00ffcc;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-shadow:0 0 10px #00ffcc;
+}
+
+#hud .stats{
+    display:flex;
+    gap:20px;
+    font-size:10px;
+    color:#444;
+}
+
+#hud .stats span{
+    color:#00ffcc;
+    font-weight:600;
+}
+
+#waiting{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+}
+
+#waiting h2{
+    color:#00ffcc;
+    font-size:14px;
+    letter-spacing:4px;
+    margin-bottom:8px;
+}
+
+#waiting p{
+    color:#333;
+    font-size:10px;
+}
 </style>
 </head>
 <body>
 
 <div id="phone-ui" onclick="activate()">
   <div id="phone-dot"></div>
-  <div id="phone-btn">Tap to continue</div>
+  <div id="phone-btn">TAP TO CONTINUE</div>
   <video id="pip-video" autoplay playsinline muted></video>
 </div>
 
